@@ -66,8 +66,6 @@ class BinaryNumbers
 public
 
     def initialize
-        @array_a = Array.new
-        @array_b = Array.new
         @array_result = Array.new
         @remainder = false
     end
@@ -75,18 +73,11 @@ public
     def sum(a, b)
         @array_a = string_binary_to_array(a)
         @array_b = string_binary_to_array(b)
-
         fill_array_with_nil
 
-        for i in 0..array_a.size
-            if @remainder
-                if array_a[i] == nil or array_a[i] == '0'
-                    array_a[i] = '1'
-                    @remainder = false
-                else
-                    array_a[i] = '0'
-                end
-            end
+        for i in 0..array_a.size 
+
+            use_remainder_if_there(i)
 
             if array_a[i] == nil or array_b[i] == nil
                 @array_result << array_a[i] if array_b[i].nil?
@@ -110,6 +101,8 @@ public
         return construct_string_result 
     end
 
+private
+
     def construct_string_result
         @array_result.reverse!.compact!
         string_result = ""
@@ -117,7 +110,16 @@ public
         return string_result.to_i.to_s
     end
 
-private
+    def use_remainder_if_there(i)
+        if @remainder
+            if @array_a[i] == nil or @array_a[i] == '0'
+                @array_a[i] = '1'
+                @remainder = false
+            else
+                @array_a[i] = '0'
+            end
+        end
+    end
 
     def string_binary_to_array(binary_string)
         array = Array.new
