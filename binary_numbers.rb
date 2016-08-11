@@ -46,6 +46,10 @@ class TestBinaryNumbers < Minitest::Test
         assert_equal '100100', @binary.sum('1101', '10111')
     end
 
+    def test_1001_plus_11_is_1100
+        assert_equal '1100', @binary.sum('1001', '11')
+    end
+
     def test_10111_plus_001010101_is_1101100
         assert_equal '1101100', @binary.sum('10111', '001010101')
     end
@@ -64,17 +68,18 @@ public
     def initialize
         @array_a = Array.new
         @array_b = Array.new
+        @array_result = Array.new
         @remainder = false
     end
 
     def sum(a, b)
         @array_a = string_binary_to_array(a)
         @array_b = string_binary_to_array(b)
+
         fill_array_with_nil
 
-        @array_result = Array.new
         for i in 0..array_a.size
-            if @remainder == true
+            if @remainder
                 if array_a[i] == nil or array_a[i] == '0'
                     array_a[i] = '1'
                     @remainder = false
@@ -102,11 +107,14 @@ public
 
         @array_result << '1' if @remainder == true 
 
-        @array_result.reverse!.compact!
+        return construct_string_result 
+    end
 
+    def construct_string_result
+        @array_result.reverse!.compact!
         string_result = ""
         @array_result.each { |binary| string_result << binary }
-        return string_result
+        return string_result.to_i.to_s
     end
 
 private
